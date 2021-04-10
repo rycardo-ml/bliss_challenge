@@ -1,4 +1,4 @@
-package com.example.blisstest.emoji.ui
+package com.example.blisstest.list.emoji
 
 import android.R
 import android.os.Bundle
@@ -9,7 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.blisstest.databinding.EmojiFragmentBinding
-import com.example.blisstest.emoji.ui.adapter.EmojiAdapter
+import com.example.blisstest.list.adapter.ListItemAdapter
+import com.example.blisstest.util.data.model.Emoji
 
 class EmojiFragment : Fragment() {
 
@@ -20,18 +21,14 @@ class EmojiFragment : Fragment() {
     private var _binding: EmojiFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: EmojiAdapter
+    private lateinit var adapter: ListItemAdapter<Emoji>
 
     private lateinit var viewModel: EmojiViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = EmojiFragmentBinding.inflate(inflater, container, false)
 
-        adapter = EmojiAdapter()
+        adapter = ListItemAdapter { removeItem(it) }
         binding.frgEmojiRv.layoutManager = GridLayoutManager(context, 4)
         binding.frgEmojiRv.adapter = adapter
 
@@ -54,6 +51,10 @@ class EmojiFragment : Fragment() {
 
         _binding = null
         super.onDestroyView()
+    }
+
+    private fun removeItem(position: Int) {
+        adapter.removeItem(position)
     }
 
     private fun configureSwipeRefresh() {

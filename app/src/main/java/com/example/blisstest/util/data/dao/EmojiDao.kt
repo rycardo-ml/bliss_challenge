@@ -12,9 +12,6 @@ interface EmojiDao {
     @Query("SELECT * FROM emoji")
     fun getAll(): List<Emoji>
 
-    @Query("SELECT * FROM emoji LIMIT 1")
-    fun getRandomEmoji(): Emoji
-
     @Query("SELECT COUNT(*) FROM emoji")
     fun getTableCount(): Int
 

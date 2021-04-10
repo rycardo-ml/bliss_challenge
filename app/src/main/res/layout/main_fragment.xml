@@ -7,6 +7,22 @@
     android:layout_height="match_parent"
     tools:context=".main.ui.MainFragment">
 
-    <include layout="@layout/layout_main_emoji"/>
+    <include
+        android:id="@+id/frg_main_lyt_emoji"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/layout_main_emoji"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/frg_main_lyt_user"
+        app:layout_constraintVertical_chainStyle="packed"/>
+
+    <include
+        android:id="@+id/frg_main_lyt_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/layout_main_user"
+        app:layout_constraintTop_toBottomOf="@id/frg_main_lyt_emoji"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

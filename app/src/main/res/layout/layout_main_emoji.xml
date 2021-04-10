@@ -23,13 +23,14 @@
 
     <include
         android:id="@+id/lyt_mainEmoji_rowEmoji"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         layout="@layout/row_emoji"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/lyt_mainEmoji_bt_random"
         app:layout_constraintStart_toStartOf="@id/lyt_mainEmoji_gl_start"
-        app:layout_constraintEnd_toEndOf="@id/lyt_mainEmoji_gl_end" />
+        app:layout_constraintEnd_toEndOf="@id/lyt_mainEmoji_gl_end"
+        app:layout_constraintVertical_chainStyle="packed"/>
 
     <Button
         android:id="@+id/lyt_mainEmoji_bt_random"
