@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.blisstest.databinding.LayoutMainEmojiBinding
+import com.example.blisstest.databinding.LayoutMainUserBinding
 import com.example.blisstest.databinding.MainFragmentBinding
-import com.example.blisstest.emoji.EmojiActivity
+import com.example.blisstest.list.ListActivity
+import com.example.blisstest.list.ListType
 import com.squareup.picasso.Picasso
 
 
@@ -22,8 +24,11 @@ class MainFragment : Fragment() {
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private var _bindingLayoutRandomEmoji: LayoutMainEmojiBinding? = null
-    private val bindingLayoutRandomEmoji get() = _bindingLayoutRandomEmoji!!
+    private var _bindingLayoutEmoji: LayoutMainEmojiBinding? = null
+    private val bindingLayoutEmoji get() = _bindingLayoutEmoji!!
+
+    private var _bindingLayoutUser: LayoutMainUserBinding? = null
+    private val bindingLayoutUser get() = _bindingLayoutUser!!
 
     private lateinit var viewModel: MainViewModel
 
@@ -33,10 +38,14 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
-        _bindingLayoutRandomEmoji = LayoutMainEmojiBinding.bind(binding.root)
+        _bindingLayoutEmoji = LayoutMainEmojiBinding.bind(binding.root)
+        _bindingLayoutUser = LayoutMainUserBinding.bind(binding.root)
 
-        bindingLayoutRandomEmoji.lytMainEmojiBtRandom.setOnClickListener { viewModel.fetchRandomEmoji() }
-        bindingLayoutRandomEmoji.lytMainEmojiTvList.setOnClickListener { openListOfEmojis() }
+        bindingLayoutEmoji.lytMainEmojiBtRandom.setOnClickListener { viewModel.fetchRandomEmoji() }
+        bindingLayoutEmoji.lytMainEmojiTvList.setOnClickListener { openList(ListType.EMOJI) }
+
+        bindingLayoutUser.lytMainUserIvSearch.setOnClickListener { searchUser() }
+        bindingLayoutUser.lytMainUserTvList.setOnClickListener { openList(ListType.USER) }
 
         return binding.root
     }
@@ -51,13 +60,22 @@ class MainFragment : Fragment() {
     override fun onDestroyView() {
         unregisterObservers()
 
-        _bindingLayoutRandomEmoji = null
+        _bindingLayoutUser = null
+        _bindingLayoutEmoji = null
         _binding = null
+
         super.onDestroyView()
     }
 
-    private fun openListOfEmojis() {
-        val intent = Intent(activity, EmojiActivity::class.java)
+    private fun searchUser() {
+        val userToSearch = bindingLayoutUser.lytMainUserEt.text.toString()
+        viewModel.fetchUser(userToSearch)
+    }
+
+    private fun openList(type: ListType) {
+        val intent = Intent(activity, ListActivity::class.java)
+        intent.putExtras(ListActivity.createBundle(type))
+
         startActivity(intent)
     }
 
@@ -66,10 +84,9 @@ class MainFragment : Fragment() {
         viewModel.getRandomEmoji().observe(viewLifecycleOwner, {
             if (it == null) return@observe
 
-            bindingLayoutRandomEmoji.lytMainEmojiRowEmoji.rowEmojiTv.text = it.description
-            Picasso.get().load(it.url).into(bindingLayoutRandomEmoji.lytMainEmojiRowEmoji.rowEmojiIv)
+            bindingLayoutEmoji.lytMainEmojiRowEmoji.rowEmojiTv.text = it.description
+            Picasso.get().load(it.url).into(bindingLayoutEmoji.lytMainEmojiRowEmoji.rowEmojiIv)
         })
-
     }
 
     private fun unregisterObservers() {

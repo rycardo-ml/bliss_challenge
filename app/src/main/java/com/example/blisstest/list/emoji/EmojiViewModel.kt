@@ -1,4 +1,4 @@
-package com.example.blisstest.emoji.ui
+package com.example.blisstest.list.emoji
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -10,7 +10,7 @@ import com.example.blisstest.util.data.repository.MainRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-private const val TAG = "EmojiViewModel"
+private const val TAG = "UserViewModel"
 class EmojiViewModel : ViewModel() {
 
     private val repository = MainRepository()

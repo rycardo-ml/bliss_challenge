@@ -5,14 +5,18 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.blisstest.util.data.model.Emoji
+import com.example.blisstest.util.data.model.User
 
 @Database(entities = arrayOf(
-    Emoji::class
+    Emoji::class,
+    User::class
 )
-    , version = 1)
+    , version = 2)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun emojiDao(): EmojiDao
+
+    abstract fun userDao(): UserDao
 
     companion object {
 
