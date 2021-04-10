@@ -1,15 +1,17 @@
 package com.example.blisstest.main.ui
 
-import androidx.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.blisstest.R
-import com.example.blisstest.databinding.LayoutRandomEmojiBinding
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
+import com.example.blisstest.databinding.LayoutMainEmojiBinding
 import com.example.blisstest.databinding.MainFragmentBinding
+import com.example.blisstest.emoji.EmojiActivity
 import com.squareup.picasso.Picasso
+
 
 class MainFragment : Fragment() {
 
@@ -20,16 +22,21 @@ class MainFragment : Fragment() {
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private var _bindingLayoutRandomEmoji: LayoutRandomEmojiBinding? = null
+    private var _bindingLayoutRandomEmoji: LayoutMainEmojiBinding? = null
     private val bindingLayoutRandomEmoji get() = _bindingLayoutRandomEmoji!!
 
     private lateinit var viewModel: MainViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
-        _bindingLayoutRandomEmoji = LayoutRandomEmojiBinding.bind(binding.root)
+        _bindingLayoutRandomEmoji = LayoutMainEmojiBinding.bind(binding.root)
 
-        bindingLayoutRandomEmoji.lytRandomEmojiBtRandom.setOnClickListener { viewModel.fetchRandomEmoji() }
+        bindingLayoutRandomEmoji.lytMainEmojiBtRandom.setOnClickListener { viewModel.fetchRandomEmoji() }
+        bindingLayoutRandomEmoji.lytMainEmojiTvList.setOnClickListener { openListOfEmojis() }
 
         return binding.root
     }
@@ -49,18 +56,23 @@ class MainFragment : Fragment() {
         super.onDestroyView()
     }
 
+    private fun openListOfEmojis() {
+        val intent = Intent(activity, EmojiActivity::class.java)
+        startActivity(intent)
+    }
+
     private fun registerObservers() {
 
         viewModel.getRandomEmoji().observe(viewLifecycleOwner, {
             if (it == null) return@observe
 
-            bindingLayoutRandomEmoji.lytRandomEmojiTvEmoji.text = it.description
-            Picasso.get().load(it.url).into(bindingLayoutRandomEmoji.lytRandomEmojiIvEmoji);
+            bindingLayoutRandomEmoji.lytMainEmojiRowEmoji.rowEmojiTv.text = it.description
+            Picasso.get().load(it.url).into(bindingLayoutRandomEmoji.lytMainEmojiRowEmoji.rowEmojiIv)
         })
 
     }
 
     private fun unregisterObservers() {
-
+        viewModel.getRandomEmoji().removeObservers(viewLifecycleOwner)
     }
 }
