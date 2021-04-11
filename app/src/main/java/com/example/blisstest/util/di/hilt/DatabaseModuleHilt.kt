@@ -3,18 +3,16 @@ package com.example.blisstest.util.di.hilt
 import android.content.Context
 import androidx.preference.PreferenceManager
 import com.example.blisstest.util.database.dao.AppDatabase
-import com.example.blisstest.util.database.dao.EmojiDao
-import com.example.blisstest.util.database.dao.UserDao
 import com.example.blisstest.util.database.preferences.PreferenceHandler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object DatabaseModuleHilt {
 
     @Singleton

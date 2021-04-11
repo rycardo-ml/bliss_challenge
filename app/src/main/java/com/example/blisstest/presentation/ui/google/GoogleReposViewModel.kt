@@ -1,6 +1,5 @@
 package com.example.blisstest.presentation.ui.google
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.DataSource
@@ -9,10 +8,12 @@ import androidx.paging.PagedList
 import com.example.blisstest.presentation.ui.google.pagination.GoogleReposDataSource
 import com.example.blisstest.util.model.GoogleRepos
 import com.example.blisstest.repository.GoogleReposRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.MainScope
+import javax.inject.Inject
 
-
-class GoogleReposViewModel @ViewModelInject constructor(
+@HiltViewModel
+class GoogleReposViewModel @Inject constructor(
     val repository: GoogleReposRepository
 ) : ViewModel() {
 

@@ -28,10 +28,6 @@ data class User(
     val avatar: String
 ): ListItem {
 
-    @Transient
-    @Ignore
-    var fetched: Boolean = false
-
     override fun getDescriptionText(): String = name ?: userName
     override fun getIconUrl(): String = avatar
 }

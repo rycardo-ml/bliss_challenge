@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import java.util.*
 
 private const val LAST_EMOJI_UPDATE = "LAST_EMOJI_UPDATE"
-class PreferenceHandler(private val sharedPreferences: SharedPreferences) {
+class PreferenceHandler(val sharedPreferences: SharedPreferences) {
 
     fun updateLastEmojiRequest() {
         val newDate = Date()

@@ -1,15 +1,18 @@
 package com.example.blisstest.repository
 
 import android.util.Log
+import androidx.room.withTransaction
 import com.example.blisstest.util.database.dao.AppDatabase
 import com.example.blisstest.util.network.GitHubService
 import com.example.blisstest.util.database.dao.UserDao
 import com.example.blisstest.util.model.User
+import com.example.blisstest.util.network.networkBoundResource
+import kotlinx.coroutines.delay
 
 private const val TAG = "UserRepository"
 class UserRepository(
-    private val apiService: GitHubService,
-    private val db: AppDatabase
+    val apiService: GitHubService,
+    val db: AppDatabase
 ) {
 
     private val userDao = db.userDao()
@@ -19,7 +22,7 @@ class UserRepository(
         Log.d(TAG, "userDao $userDao")
     }
 
-    fun getUsers(): List<User> {
+    suspend fun getUsers(): List<User> {
         Log.d(TAG, "init getUsers")
 
         val users = userDao.getAll()
@@ -28,33 +31,36 @@ class UserRepository(
         return users
     }
 
-    suspend fun getUser(userName: String): User {
-        Log.d(TAG, "init getUser")
-
-        val user = userDao.getUser(userName) ?: fetchUser(userName)
-
-        Log.d(TAG, "end getUser")
-
-        return user
-    }
-
-    fun deleteUser(user: User) {
+    suspend fun deleteUser(user: User) {
         Log.d(TAG, "init deleteUser")
         userDao.delete(user)
         Log.d(TAG, "end deleteUser")
     }
 
-    private suspend fun fetchUser(userName: String): User {
-        Log.d(TAG, "init fetchUser")
+    fun getOrFetchUser(userName: String) = networkBoundResource(
+        query = {
+            Log.d(TAG, "getOrFetchUser#query")
+            userDao.getUser(userName)
+        },
+        fetch = {
+            Log.d(TAG, "getOrFetchUser#fetch")
+            //delay(5000)
+            apiService.getUser(userName)
+        },
+        shouldFetch = {
+            Log.d(TAG, "getOrFetchUser#shouldFetch")
+            shouldFetch(it)
+        },
+        saveFetchResult = {
+            Log.d(TAG, "getOrFetchUser#saveFethResult")
+            db.withTransaction {
+                userDao.insert(it)
+            }
+        }
+    )
 
-        val user = apiService.getUser(userName)
-
-        userDao.insert(user)
-
-        user.fetched = true
-
-        Log.d(TAG, "end fetchUser")
-        return user
+    private fun shouldFetch(user: User?): Boolean {
+        user ?: return true
+        return false
     }
-
 }

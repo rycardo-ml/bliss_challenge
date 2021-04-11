@@ -3,6 +3,8 @@ package com.example.blisstest.util.network
 import com.example.blisstest.util.Resource
 import kotlinx.coroutines.flow.*
 
+//TODO Why emit blocks the process?
+
 inline fun <ResultType, RequestType> networkBoundResource(
     crossinline query: () -> Flow<ResultType>,
     crossinline fetch: suspend () -> RequestType,
@@ -10,20 +12,22 @@ inline fun <ResultType, RequestType> networkBoundResource(
     crossinline shouldFetch: (ResultType) -> Boolean = { true }
 ) = flow {
 
-    val storeData = query().first()
+    //emit(Resource.Loading())
+    val data = query().first()
 
-    if (!shouldFetch(storeData)) {
-        emitAll(query().map { Resource.Success(it) })
-        return@flow
-    }
+    val flow = if (shouldFetch(data)) {
+        //emit(Resource.Loading(data))
 
-    emit(Resource.Loading(storeData))
-    emitAll(
         try {
             saveFetchResult(fetch())
-            query().map { Resource.Success(it) }
-        } catch (throwable: Throwable){
+            query().map { Resource.Success(it, true) }
+        } catch (throwable: Throwable) {
+            throwable.printStackTrace()
             query().map { Resource.Error(throwable, it) }
         }
-    )
+    } else {
+        query().map { Resource.Success(it) }
+    }
+
+    emitAll(flow)
 }

@@ -2,6 +2,7 @@ package com.example.blisstest.presentation.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,12 @@ import com.example.blisstest.databinding.LayoutMainUserBinding
 import com.example.blisstest.databinding.MainFragmentBinding
 import com.example.blisstest.presentation.ListActivity
 import com.example.blisstest.presentation.ui.common.list_items.ListType
+import com.example.blisstest.util.Resource
+import com.example.blisstest.util.model.User
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+
+private const val TAG = "MainFragment"
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
@@ -36,7 +41,7 @@ class MainFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
         _bindingLayoutEmoji = LayoutMainEmojiBinding.bind(binding.frgMainLytEmoji.root)
-        _bindingLayoutUser = LayoutMainUserBinding.bind(binding.root)
+        _bindingLayoutUser = LayoutMainUserBinding.bind(binding.frgMainLytUser.root)
 
         binding.frgMainBtRepositories.setOnClickListener { openList(ListType.GOOGLE_REPOS) }
 
@@ -73,6 +78,22 @@ class MainFragment : Fragment() {
         startActivity(intent)
     }
 
+    private fun handleUserFetched(item: Resource<User?>) {
+        Log.d(TAG, "user fetched ${item.fetchedFromApi}")
+
+        if (item is Resource.Error) {
+            Log.d(TAG, "failed to fetch user ${item.error?.message}" )
+            return
+        }
+
+        if (item is Resource.Loading) {
+            Log.d(TAG, "loading user")
+            return
+        }
+
+        Log.d(TAG, "success user ${item.data?.userName}")
+    }
+
     private fun registerObservers() {
 
         viewModel.randomEmoji.observe(viewLifecycleOwner, {
@@ -83,9 +104,15 @@ class MainFragment : Fragment() {
                 Picasso.get().load(it.url).into(bindingLayoutEmoji.lytMainEmojiRowEmoji.rowEmojiIv)
             }
         })
+
+        viewModel.fetchedUser.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+            handleUserFetched(it)
+        })
     }
 
     private fun unregisterObservers() {
         viewModel.randomEmoji.removeObservers(viewLifecycleOwner)
+        viewModel.fetchedUser.removeObservers(viewLifecycleOwner)
     }
 }

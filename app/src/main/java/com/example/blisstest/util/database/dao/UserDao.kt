@@ -2,19 +2,20 @@ package com.example.blisstest.util.database.dao
 
 import androidx.room.*
 import com.example.blisstest.util.model.User
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
 
     @Query("SELECT * FROM user")
-    fun getAll(): List<User>
+    suspend fun getAll(): List<User>
 
     @Query("SELECT * FROM user WHERE user_name = :userName")
-    fun getUser(userName: String): User?
+    fun getUser(userName: String): Flow<User?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(user: User)
+    suspend fun insert(user: User)
 
     @Delete
-    fun delete(user: User)
+    suspend fun delete(user: User)
 }

@@ -15,10 +15,10 @@ import kotlinx.coroutines.withContext
 
 private const val TAG = "MainRepository"
 class EmojiRepository(
-    private val apiService: GitHubService,
-    private val db: AppDatabase,
-    private val preferenceHandler: PreferenceHandler,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    val apiService: GitHubService,
+    val db: AppDatabase,
+    val preferenceHandler: PreferenceHandler,
+    @IoDispatcher val ioDispatcher: CoroutineDispatcher
 ) {
 
     private val emojiDao = db.emojiDao()
@@ -36,7 +36,7 @@ class EmojiRepository(
         },
         fetch = {
             Log.d(TAG, "getObservableEmojis#fetch")
-            delay(5000)
+            //delay(5000)
             apiService.getEmojis()
         },
         shouldFetch = {
@@ -48,6 +48,7 @@ class EmojiRepository(
             db.withTransaction {
                 emojiDao.deleteAll()
                 emojiDao.insert(*it.toTypedArray())
+                preferenceHandler.updateLastEmojiRequest()
             }
         }
     )

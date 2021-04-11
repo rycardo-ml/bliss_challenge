@@ -2,6 +2,7 @@ package com.example.blisstest.util.di.hilt
 
 import com.example.blisstest.presentation.ui.emoji.EmojiUseCase
 import com.example.blisstest.presentation.ui.main.MainUseCase
+import com.example.blisstest.presentation.ui.user.UserUseCase
 import com.example.blisstest.repository.EmojiRepository
 import com.example.blisstest.repository.UserRepository
 import dagger.Module
@@ -26,4 +27,7 @@ object UseCaseModuleHilt {
                            @IoDispatcher ioDispatcher: CoroutineDispatcher):
             MainUseCase = MainUseCase(emojiRepository, userRepository, ioDispatcher)
 
+    @ActivityRetainedScoped
+    @Provides
+    fun provideUserUseCase(userRepository: UserRepository): UserUseCase = UserUseCase(userRepository)
 }
