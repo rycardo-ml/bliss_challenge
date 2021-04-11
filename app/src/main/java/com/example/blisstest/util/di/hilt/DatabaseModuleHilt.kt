@@ -26,10 +26,4 @@ object DatabaseModuleHilt {
     @Singleton
     @Provides
     fun provideRoom(@ApplicationContext app: Context): AppDatabase = AppDatabase.invoke(app)
-
-    @Provides
-    fun provideUserDao(database: AppDatabase): UserDao = database.userDao()
-
-    @Provides
-    fun provideEmojiDao(database: AppDatabase): EmojiDao = database.emojiDao()
 }

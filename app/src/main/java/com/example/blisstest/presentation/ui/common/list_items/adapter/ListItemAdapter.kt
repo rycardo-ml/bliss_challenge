@@ -30,11 +30,13 @@ class ListItemAdapter<T: ListItem>(private val removeFunction: (position: Int) -
         notifyItemRemoved(position)
     }
 
-    fun refreshData(items: List<T>) {
-        this.items.clear()
-        this.items.addAll(items)
+    fun refreshData(items: List<T>?) {
+        items?.let {
+            this.items.clear()
+            this.items.addAll(it)
 
-        notifyDataSetChanged()
+            notifyDataSetChanged()
+        }
     }
 
     fun updateChangedItems(items: List<ChangedItem>) {

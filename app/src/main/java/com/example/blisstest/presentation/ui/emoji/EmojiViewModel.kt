@@ -2,32 +2,27 @@ package com.example.blisstest.presentation.ui.emoji
 
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.blisstest.util.model.Emoji
-import com.example.blisstest.repository.MainRepository
-import kotlinx.coroutines.Dispatchers
+import com.example.blisstest.util.Resource
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 private const val TAG = "UserViewModel"
 class EmojiViewModel @ViewModelInject constructor(
-    private val mainRepository: MainRepository
+    private val emojiUseCase: EmojiUseCase
 ) : ViewModel() {
 
-    private val ldEmojis = MutableLiveData<List<Emoji>>()
+
+    private val _emojis = MutableLiveData<Resource<List<Emoji>>>()
+    val emojis: LiveData<Resource<List<Emoji>>> get() = _emojis
 
     fun fetchEmojis() {
-        Log.d(TAG, "init fetchEmojis")
+        Log.d(TAG, "fetchEmojis")
 
-        viewModelScope.launch (Dispatchers.IO) {
-            val result = mainRepository.getEmojis()
-            ldEmojis.postValue(result)
+        viewModelScope.launch {
+            val flowEmojis = emojiUseCase.getEmojis()
+            (emojis as MutableLiveData).value = flowEmojis.first()
         }
-
-        Log.d(TAG, "end fetchEmojis")
     }
-
-    fun getEmojis(): LiveData<List<Emoji>> = ldEmojis
 }

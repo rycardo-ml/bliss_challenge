@@ -1,6 +1,7 @@
 package com.example.blisstest.repository
 
 import android.util.Log
+import com.example.blisstest.util.database.dao.AppDatabase
 import com.example.blisstest.util.network.GitHubService
 import com.example.blisstest.util.database.dao.UserDao
 import com.example.blisstest.util.model.User
@@ -8,8 +9,10 @@ import com.example.blisstest.util.model.User
 private const val TAG = "UserRepository"
 class UserRepository(
     private val apiService: GitHubService,
-    private val userDao: UserDao
+    private val db: AppDatabase
 ) {
+
+    private val userDao = db.userDao()
 
     init {
         Log.d(TAG, "apiService $apiService")

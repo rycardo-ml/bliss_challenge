@@ -5,16 +5,26 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.blisstest.util.model.Emoji
+import kotlinx.coroutines.flow.Flow
+
+
 
 @Dao
 interface EmojiDao {
 
+    /*
+    Flow is an observable that emmits a list of emojis every time the table changes
+    Flow is similar to suspend function the value comes async
+     */
     @Query("SELECT * FROM emoji")
-    fun getAll(): List<Emoji>
+    fun getAllObservable(): Flow<List<Emoji>>
 
     @Query("SELECT COUNT(*) FROM emoji")
-    fun getTableCount(): Int
+    suspend fun getTableCount(): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg emojis: Emoji)
+    suspend fun insert(vararg emojis: Emoji)
+
+    @Query("DELETE FROM emoji")
+    suspend fun deleteAll()
 }

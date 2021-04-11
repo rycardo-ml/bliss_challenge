@@ -35,7 +35,7 @@ class MainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
-        _bindingLayoutEmoji = LayoutMainEmojiBinding.bind(binding.root)
+        _bindingLayoutEmoji = LayoutMainEmojiBinding.bind(binding.frgMainLytEmoji.root)
         _bindingLayoutUser = LayoutMainUserBinding.bind(binding.root)
 
         binding.frgMainBtRepositories.setOnClickListener { openList(ListType.GOOGLE_REPOS) }
@@ -75,15 +75,17 @@ class MainFragment : Fragment() {
 
     private fun registerObservers() {
 
-        viewModel.getRandomEmoji().observe(viewLifecycleOwner, {
+        viewModel.randomEmoji.observe(viewLifecycleOwner, {
             if (it == null) return@observe
 
-            bindingLayoutEmoji.lytMainEmojiRowEmoji.rowEmojiTv.text = it.description
-            Picasso.get().load(it.url).into(bindingLayoutEmoji.lytMainEmojiRowEmoji.rowEmojiIv)
+            it.data?.let {
+                bindingLayoutEmoji.lytMainEmojiRowEmoji.rowEmojiTv.text = it.description
+                Picasso.get().load(it.url).into(bindingLayoutEmoji.lytMainEmojiRowEmoji.rowEmojiIv)
+            }
         })
     }
 
     private fun unregisterObservers() {
-        viewModel.getRandomEmoji().removeObservers(viewLifecycleOwner)
+        viewModel.randomEmoji.removeObservers(viewLifecycleOwner)
     }
 }

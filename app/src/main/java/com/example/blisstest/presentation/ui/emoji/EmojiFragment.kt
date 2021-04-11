@@ -54,7 +54,9 @@ class EmojiFragment : Fragment() {
     }
 
     private fun configureSwipeRefresh() {
-        binding.root.setOnRefreshListener { viewModel.fetchEmojis() }
+        binding.root.setOnRefreshListener {
+            viewModel.fetchEmojis()
+        }
         binding.root.setColorSchemeResources(
             com.example.blisstest.R.color.colorPrimary,
             R.color.holo_green_dark,
@@ -64,13 +66,15 @@ class EmojiFragment : Fragment() {
     }
 
     private fun registerObservers() {
-        viewModel.getEmojis().observe(viewLifecycleOwner, {
-            adapter.refreshData(it)
+        viewModel.emojis.observe(viewLifecycleOwner, { result ->
+            result ?: return@observe
+
+            adapter.refreshData(result.data)
             binding.root.isRefreshing = false
         })
     }
 
     private fun unregisterObservers() {
-        viewModel.getEmojis().removeObservers(viewLifecycleOwner)
+        viewModel.emojis.removeObservers(viewLifecycleOwner)
     }
 }
