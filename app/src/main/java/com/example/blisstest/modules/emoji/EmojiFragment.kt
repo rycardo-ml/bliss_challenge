@@ -1,4 +1,4 @@
-package com.example.blisstest.list.emoji
+package com.example.blisstest.modules.emoji
 
 import android.R
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.blisstest.databinding.EmojiFragmentBinding
-import com.example.blisstest.list.adapter.ListItemAdapter
+import com.example.blisstest.util.ui.list.adapter.ListItemAdapter
 import com.example.blisstest.util.data.model.Emoji
 
 class EmojiFragment : Fragment() {

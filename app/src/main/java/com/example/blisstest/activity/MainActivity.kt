@@ -1,9 +1,9 @@
-package com.example.blisstest.main
+package com.example.blisstest.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.blisstest.R
-import com.example.blisstest.main.ui.MainFragment
+import com.example.blisstest.modules.main.ui.MainFragment
 
 class MainActivity : AppCompatActivity() {
 

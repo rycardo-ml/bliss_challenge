@@ -1,4 +1,4 @@
-package com.example.blisstest.main.ui
+package com.example.blisstest.modules.main.ui
 
 import android.util.Log
 import androidx.lifecycle.LiveData

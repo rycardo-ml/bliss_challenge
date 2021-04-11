@@ -1,4 +1,4 @@
-package com.example.blisstest.list.adapter
+package com.example.blisstest.util.ui.list.adapter
 
 import android.view.LayoutInflater
 import android.view.View
