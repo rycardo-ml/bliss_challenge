@@ -1,4 +1,4 @@
-package com.example.blisstest.list.emoji
+package com.example.blisstest.modules.emoji
 
 import android.util.Log
 import androidx.lifecycle.LiveData

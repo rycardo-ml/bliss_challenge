@@ -3,7 +3,7 @@ package com.example.blisstest.util.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.blisstest.list.adapter.ListItem
+import com.example.blisstest.util.ui.list.adapter.ListItem
 
 @Entity(tableName = "emoji")
 data class Emoji(

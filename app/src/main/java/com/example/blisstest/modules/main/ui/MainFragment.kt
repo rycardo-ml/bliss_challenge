@@ -1,4 +1,4 @@
-package com.example.blisstest.main.ui
+package com.example.blisstest.modules.main.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,10 +10,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.blisstest.databinding.LayoutMainEmojiBinding
 import com.example.blisstest.databinding.LayoutMainUserBinding
 import com.example.blisstest.databinding.MainFragmentBinding
-import com.example.blisstest.list.ListActivity
-import com.example.blisstest.list.ListType
+import com.example.blisstest.activity.ListActivity
+import com.example.blisstest.util.ui.list.ListType
 import com.squareup.picasso.Picasso
-
 
 class MainFragment : Fragment() {
 
@@ -40,6 +39,8 @@ class MainFragment : Fragment() {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
         _bindingLayoutEmoji = LayoutMainEmojiBinding.bind(binding.root)
         _bindingLayoutUser = LayoutMainUserBinding.bind(binding.root)
+
+        binding.frgMainBtRepositories.setOnClickListener { openList(ListType.GOOGLE_REPOS) }
 
         bindingLayoutEmoji.lytMainEmojiBtRandom.setOnClickListener { viewModel.fetchRandomEmoji() }
         bindingLayoutEmoji.lytMainEmojiTvList.setOnClickListener { openList(ListType.EMOJI) }

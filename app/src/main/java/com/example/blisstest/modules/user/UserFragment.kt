@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.blisstest.databinding.UserFragmentBinding
-import com.example.blisstest.list.adapter.ListItemAdapter
+import com.example.blisstest.util.ui.list.adapter.ListItemAdapter
 import com.example.blisstest.util.ListHolderType
 import com.example.blisstest.util.data.model.User
 

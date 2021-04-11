@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.example.blisstest.list.adapter.ListItem
+import com.example.blisstest.util.ui.list.adapter.ListItem
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "user")
