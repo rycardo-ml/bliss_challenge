@@ -1,6 +1,7 @@
 package com.example.blisstest.presentation.ui.google
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,9 +48,14 @@ class GoogleReposFragment : Fragment() {
         viewModel.searchPagedListLiveData.observe(viewLifecycleOwner, {
             adapter.submitList(it)
         })
+
+        viewModel.paginationStatusLiveData.observe(viewLifecycleOwner,  {
+            Log.d("GoogleReposFragment", "change status $it")
+        })
     }
 
     private fun unregisterObservers() {
         viewModel.searchPagedListLiveData.removeObservers(viewLifecycleOwner)
+        viewModel.paginationStatusLiveData.removeObservers(viewLifecycleOwner)
     }
 }
