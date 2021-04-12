@@ -1,11 +1,14 @@
 package com.example.blisstest.presentation.ui.main
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.blisstest.databinding.LayoutMainEmojiBinding
@@ -17,6 +20,7 @@ import com.example.blisstest.util.Resource
 import com.example.blisstest.util.model.User
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+
 
 private const val TAG = "MainFragment"
 
@@ -38,7 +42,11 @@ class MainFragment : Fragment() {
 
     private val viewModel by viewModels<MainViewModel>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
         _bindingLayoutEmoji = LayoutMainEmojiBinding.bind(binding.frgMainLytEmoji.root)
         _bindingLayoutUser = LayoutMainUserBinding.bind(binding.frgMainLytUser.root)
@@ -48,6 +56,9 @@ class MainFragment : Fragment() {
         bindingLayoutEmoji.lytMainEmojiBtRandom.setOnClickListener { viewModel.fetchRandomEmoji() }
         bindingLayoutEmoji.lytMainEmojiTvList.setOnClickListener { openList(ListType.EMOJI) }
 
+        bindingLayoutUser.lytMainUserEt.setOnEditorActionListener { v, actionId, event -> handleEditTextAction(
+            actionId
+        )  }
         bindingLayoutUser.lytMainUserIvSearch.setOnClickListener { searchUser() }
         bindingLayoutUser.lytMainUserTvList.setOnClickListener { openList(ListType.USER) }
 
@@ -66,7 +77,20 @@ class MainFragment : Fragment() {
         super.onDestroyView()
     }
 
+    private fun handleEditTextAction(actionId: Int): Boolean {
+        return when (actionId) {
+            EditorInfo.IME_ACTION_SEARCH -> {
+                searchUser()
+                true
+            }
+            else -> false
+        }
+    }
+
     private fun searchUser() {
+        showUserLoadingView()
+        hideKeyboard()
+
         val userToSearch = bindingLayoutUser.lytMainUserEt.text.toString()
         viewModel.fetchUser(userToSearch)
     }
@@ -82,7 +106,7 @@ class MainFragment : Fragment() {
         Log.d(TAG, "user fetched ${item.fetchedFromApi}")
 
         if (item is Resource.Error) {
-            Log.d(TAG, "failed to fetch user ${item.error?.message}" )
+            Log.d(TAG, "failed to fetch user ${item.error?.message}")
             return
         }
 
@@ -92,6 +116,26 @@ class MainFragment : Fragment() {
         }
 
         Log.d(TAG, "success user ${item.data?.userName}")
+    }
+
+    private fun showUserLoadingView() {
+        bindingLayoutUser.layoutLoading.run {
+            visibility = View.VISIBLE
+            bringToFront()
+        }
+    }
+
+    private fun hideUserLoadingView() {
+        bindingLayoutUser.run {
+            layoutLoading.visibility = View.GONE
+            lytMainUserEt.requestFocus()
+        }
+    }
+
+    private fun hideKeyboard() {
+        (context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager).run {
+            hideSoftInputFromWindow(bindingLayoutUser.lytMainUserEt.windowToken, 0)
+        }
     }
 
     private fun registerObservers() {
@@ -107,6 +151,8 @@ class MainFragment : Fragment() {
 
         viewModel.fetchedUser.observe(viewLifecycleOwner, {
             if (it == null) return@observe
+
+            hideUserLoadingView()
             handleUserFetched(it)
         })
     }

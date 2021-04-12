@@ -13,7 +13,10 @@ class ListItemHolder (itemView: View, private val removeFunction: (position: Int
     private val ivIcon = itemView.findViewById<ImageView>(R.id.row_emoji_iv)
 
     init {
-        itemView.setOnClickListener { removeFunction.invoke(adapterPosition) }
+        itemView.setOnClickListener {
+            if (adapterPosition < 0) return@setOnClickListener
+            removeFunction.invoke(adapterPosition)
+        }
     }
 
     fun bind(item: ListItem) {

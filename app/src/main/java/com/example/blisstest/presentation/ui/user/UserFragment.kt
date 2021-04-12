@@ -35,7 +35,6 @@ class UserFragment : Fragment() {
         binding.frgUserRv.adapter = adapter
 
         registerObservers()
-        viewModel.fetchUsers()
 
         return binding.root
     }

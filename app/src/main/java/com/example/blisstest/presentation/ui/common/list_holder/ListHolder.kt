@@ -1,5 +1,7 @@
 package com.example.blisstest.presentation.ui.common.list_holder
 
+import android.util.Log
+
 class ListHolder<T>(val list: MutableList<T> = mutableListOf()) {
     var changedItems = mutableListOf<ChangedItem>()
     var type: ListHolderType = ListHolderType.FULL

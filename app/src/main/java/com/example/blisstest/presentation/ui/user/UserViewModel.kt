@@ -23,7 +23,11 @@ class UserViewModel @Inject constructor(
     private val holder = ListHolder<User>()
     private val ldUsers = MutableLiveData<ListHolder<User>>()
 
-    fun fetchUsers() {
+    init {
+        fetchUsers()
+    }
+
+    private fun fetchUsers() {
         Log.d(TAG, "init fetchUsers")
 
         viewModelScope.launch (Dispatchers.IO) {

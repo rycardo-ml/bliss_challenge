@@ -37,7 +37,6 @@ class EmojiFragment : Fragment() {
         configureSwipeRefresh()
 
         registerObservers()
-        viewModel.fetchEmojis()
 
         return binding.root
     }

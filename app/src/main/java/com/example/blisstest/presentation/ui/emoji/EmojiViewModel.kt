@@ -16,16 +16,19 @@ class EmojiViewModel @Inject constructor(
     private val emojiUseCase: EmojiUseCase
 ) : ViewModel() {
 
-
     private val _emojis = MutableLiveData<Resource<List<Emoji>>>()
     val emojis: LiveData<Resource<List<Emoji>>> get() = _emojis
+
+    init {
+        fetchEmojis()
+    }
 
     fun fetchEmojis() {
         Log.d(TAG, "fetchEmojis")
 
         viewModelScope.launch {
             val flowEmojis = emojiUseCase.getEmojis()
-            (emojis as MutableLiveData).value = flowEmojis.first()
+            _emojis.value = flowEmojis.first()
         }
     }
 }

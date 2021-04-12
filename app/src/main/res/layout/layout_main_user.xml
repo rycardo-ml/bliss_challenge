@@ -8,6 +8,12 @@
     android:layout_gravity="center"
     card_view:cardCornerRadius="4dp">
 
+    <com.example.blisstest.presentation.ui.common.LoadingView
+        android:id="@+id/layout_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,6 +50,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:imeOptions="actionSearch"
+            android:inputType="textNoSuggestions"
             android:hint="User name"
             app:layout_constraintTop_toBottomOf="@id/lyt_mainUser_title"
             app:layout_constraintBottom_toTopOf="@id/lyt_mainUser_tv_list"
@@ -55,7 +63,7 @@
             android:layout_width="48dp"
             android:layout_height="0dp"
             android:layout_margin="4dp"
-            app:srcCompat="@drawable/ic_launcher_background"
+            app:srcCompat="@drawable/ic_download"
             app:layout_constraintTop_toTopOf="@id/lyt_mainUser_et"
             app:layout_constraintBottom_toBottomOf="@id/lyt_mainUser_et"
             app:layout_constraintStart_toEndOf="@id/lyt_mainUser_et"
