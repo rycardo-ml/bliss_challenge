@@ -1,70 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:layout_gravity="center"
+    card_view:cardCornerRadius="4dp">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/lyt_mainUser_gl_start"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent=".1" />
+    <com.example.blisstest.presentation.ui.common.LoadingView
+        android:id="@+id/layout_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/lyt_mainUser_gl_end"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent=".9" />
-
-    <EditText
-        android:id="@+id/lyt_mainUser_et"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:hint="User name"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/lyt_mainUser_vw_separator"
-        app:layout_constraintStart_toStartOf="@id/lyt_mainUser_gl_start"
-        app:layout_constraintEnd_toStartOf="@id/lyt_mainUser_iv_search" />
+        android:paddingBottom="16dp">
 
-    <ImageView
-        android:id="@+id/lyt_mainUser_iv_search"
-        android:layout_width="48dp"
-        android:layout_height="0dp"
-        app:srcCompat="@drawable/ic_launcher_background"
-        app:layout_constraintTop_toTopOf="@id/lyt_mainUser_et"
-        app:layout_constraintBottom_toBottomOf="@id/lyt_mainUser_et"
-        app:layout_constraintStart_toEndOf="@id/lyt_mainUser_et"
-        app:layout_constraintEnd_toEndOf="@id/lyt_mainUser_gl_end"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/lyt_mainUser_gl_start"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".1" />
 
-    <View
-        android:id="@+id/lyt_mainUser_vw_separator"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="#c3c3c3"
-        android:layout_margin="16dp"
-        app:layout_constraintTop_toBottomOf="@id/lyt_mainUser_et"
-        app:layout_constraintBottom_toTopOf="@id/lyt_mainUser_tv_list"
-        app:layout_constraintStart_toStartOf="@id/lyt_mainUser_gl_start"
-        app:layout_constraintEnd_toEndOf="@id/lyt_mainUser_gl_end" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/lyt_mainUser_gl_end"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".9" />
 
-    <TextView
-        android:id="@+id/lyt_mainUser_tv_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="Avatar List"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/lyt_mainUser_vw_separator"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/lyt_mainUser_gl_start"
-        app:layout_constraintEnd_toEndOf="@id/lyt_mainUser_gl_end" />
+        <TextView
+            android:id="@+id/lyt_mainUser_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#b1b1b1"
+            android:padding="8dp"
+            android:textColor="@android:color/white"
+            android:text="Users"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <EditText
+            android:id="@+id/lyt_mainUser_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:imeOptions="actionSearch"
+            android:inputType="textNoSuggestions"
+            android:hint="User name"
+            app:layout_constraintTop_toBottomOf="@id/lyt_mainUser_title"
+            app:layout_constraintBottom_toTopOf="@id/lyt_mainUser_tv_list"
+            app:layout_constraintStart_toStartOf="@id/lyt_mainUser_gl_start"
+            app:layout_constraintEnd_toStartOf="@id/lyt_mainUser_iv_search" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/lyt_mainUser_iv_search"
+            android:layout_width="48dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            app:srcCompat="@drawable/ic_download"
+            app:layout_constraintTop_toTopOf="@id/lyt_mainUser_et"
+            app:layout_constraintBottom_toBottomOf="@id/lyt_mainUser_et"
+            app:layout_constraintStart_toEndOf="@id/lyt_mainUser_et"
+            app:layout_constraintEnd_toEndOf="@id/lyt_mainUser_gl_end"/>
+
+        <TextView
+            android:id="@+id/lyt_mainUser_tv_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_list_item"
+            android:layout_marginTop="16dp"
+            android:padding="16dp"
+            android:text="Avatar List"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/lyt_mainUser_et"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/lyt_mainUser_gl_start"
+            app:layout_constraintEnd_toEndOf="@id/lyt_mainUser_gl_end" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
