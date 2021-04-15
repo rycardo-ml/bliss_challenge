@@ -39,7 +39,7 @@ class UserRepository(
 
     fun getOrFetchUser(userName: String) = networkBoundResource(
         query = {
-            Log.d(TAG, "getOrFetchUser#query")
+            Log.d(TAG, "getOrFetchUser#query $userName")
             userDao.getUser(userName)
         },
         fetch = {

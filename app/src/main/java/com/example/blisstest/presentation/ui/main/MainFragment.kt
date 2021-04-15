@@ -106,16 +106,22 @@ class MainFragment : Fragment() {
         Log.d(TAG, "user fetched ${item.fetchedFromApi}")
 
         if (item is Resource.Error) {
-            Log.d(TAG, "failed to fetch user ${item.error?.message}")
+            bindingLayoutUser.lytMainUserTvStatus.text = "failed to fetch user ${item.error?.message}"
+            bindingLayoutUser.lytMainUserTvStatus.visibility = View.VISIBLE
             return
         }
 
         if (item is Resource.Loading) {
-            Log.d(TAG, "loading user")
+            showUserLoadingView()
             return
         }
 
-        Log.d(TAG, "success user ${item.data?.userName}")
+        val successMessage =
+            if (item.fetchedFromApi) "User ${item.data?.getDescriptionText()} fetched from api."
+            else "User ${item.data?.getDescriptionText()} already fetched."
+
+        bindingLayoutUser.lytMainUserTvStatus.text = successMessage
+        bindingLayoutUser.lytMainUserTvStatus.visibility = View.VISIBLE
     }
 
     private fun showUserLoadingView() {
@@ -123,6 +129,8 @@ class MainFragment : Fragment() {
             visibility = View.VISIBLE
             bringToFront()
         }
+
+        bindingLayoutUser.lytMainUserTvStatus.visibility = View.GONE
     }
 
     private fun hideUserLoadingView() {

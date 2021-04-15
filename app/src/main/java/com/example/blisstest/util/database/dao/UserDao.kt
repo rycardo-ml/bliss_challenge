@@ -10,7 +10,7 @@ interface UserDao {
     @Query("SELECT * FROM user")
     suspend fun getAll(): List<User>
 
-    @Query("SELECT * FROM user WHERE user_name = :userName")
+    @Query("SELECT * FROM user WHERE LOWER(user_name) = LOWER(:userName)")
     fun getUser(userName: String): Flow<User?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
